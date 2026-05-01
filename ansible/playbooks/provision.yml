@@ -1,0 +1,16 @@
+- name: Provision application server
+  hosts: all
+  become: true
+
+  roles:
+    - common
+    - ssh
+    - firewall
+    - journald
+    - docker
+    - postgres
+    - redis
+    - app
+    - nginx
+    - backup
+    - systemd

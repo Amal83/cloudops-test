@@ -1,0 +1,38 @@
+- name: Create app database
+  community.postgresql.postgresql_db:
+    name: app
+    state: present
+  become: true
+
+- name: Create app user
+  community.postgresql.postgresql_user:
+    name: app_user
+    password: "{{ db_password }}"
+    state: present
+  become: true
+
+- name: Grant full access to app_user
+  community.postgresql.postgresql_privs:
+    db: app
+    role: app_user
+    type: database
+    privs: ALL
+    state: present
+  become: true
+
+- name: Create readonly user
+  community.postgresql.postgresql_user:
+    name: app_readonly
+    password: "{{ db_readonly_password }}"
+    state: present
+  become: true
+
+- name: Grant read-only access
+  community.postgresql.postgresql_privs:
+    db: app
+    role: app_readonly
+    type: table
+    privs: SELECT
+    objs: ALL_IN_SCHEMA
+    state: present
+  become: true
