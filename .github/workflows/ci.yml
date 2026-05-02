@@ -3,7 +3,7 @@ name: Ansible CI/CD
 on:
   push:
     branches:
-      - aq-test # only for my testing, remove later. everywhere "aq-test" should be replaced with "staging"
+      - aq-test
       - staging
       - main
   pull_request:
@@ -49,12 +49,20 @@ jobs:
       - name: Add host to known hosts
         run: ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Select inventory
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "INVENTORY=production" >> $GITHUB_ENV
+          else
+            echo "INVENTORY=staging" >> $GITHUB_ENV
+          fi
+
       - name: Run Ansible deploy
         run: |
           ansible-playbook \
-            -i ansible/inventories/${{ github.ref_name }}/hosts.yml \
-            ansible/playbooks/deploy.yml \
+            -i ansible/inventories/$INVENTORY/hosts.yml \
+            ansible/playbooks/provision.yml \
             --private-key ~/.ssh/id_rsa
 
-      - name: Database migration step (pseudo)
-        run: echo "Running ORM migrations (Django/Rails placeholder)"
+      - name: Database migration step (optional)
+        run: echo "Run migrations here if needed"
