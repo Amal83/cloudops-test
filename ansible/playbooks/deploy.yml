@@ -15,3 +15,4 @@
 
     - name: Run DB migrations (pseudo)
       command: echo "run migrations here"
+      

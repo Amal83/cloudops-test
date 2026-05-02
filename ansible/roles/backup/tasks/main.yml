@@ -20,3 +20,4 @@
     name: "db backup"
     minute: "0"
     job: "/usr/local/bin/backup-db.sh"
+    

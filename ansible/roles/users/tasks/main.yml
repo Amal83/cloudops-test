@@ -11,3 +11,4 @@
   ansible.builtin.authorized_key:
     user: deploy
     key: "{{ lookup('file', 'files/deploy.pub') }}"
+    

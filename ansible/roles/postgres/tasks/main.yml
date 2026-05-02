@@ -9,3 +9,4 @@
 - name: Create readonly user
   ansible.builtin.command: sudo -u postgres psql -c "CREATE USER app_readonly WITH PASSWORD 'strongpassword';"
   ignore_errors: true
+  
